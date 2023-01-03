@@ -32,51 +32,9 @@
     <p id="acceleration"></p>
     <p id="accelerationIncludingGravity"></p>
     <p id="rotationRate"></p>
-
-    <h2>Touch event avec smartphone</h2>
-    <div id="output"></div>
-    <canvas width="600" height="600" style="border:solid black 1px;" id="canvas"></canvas>
+    
   </body>
   <script type="text/javascript">
-    const output = document.getElementById("output");
-    const canvas = document.getElementById("canvas");
-    let isDrawing = false;
-    let x = 0;
-    let y = 0;
-
-    function draw(event) {
-      if (isDrawing) {
-        const ctx = canvas.getContext("2d");
-        ctx.lineWidth = 5;
-        ctx.lineCap = "round";
-        ctx.strokeStyle = "black";
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        x = event.touches[0].clientX;
-        y = event.touches[0].clientY;
-        ctx.lineTo(x, y);
-        ctx.stroke();
-      }
-    }
-
-    canvas.addEventListener("touchstart", (event) => {
-      isDrawing = true;
-      x = event.touches[0].clientX;
-      y = event.touches[0].clientY;
-      output.innerHTML = `Type: touchstart<br>X: ${x}<br>Y: ${y}`;
-    });
-
-    canvas.addEventListener("touchmove", (event) => {
-      event.preventDefault();
-      draw(event);
-      output.innerHTML = `Type: touchmove<br>X: ${x}<br>Y: ${y}`;
-    });
-
-    canvas.addEventListener("touchend", (event) => {
-      isDrawing = false;
-      output.innerHTML = `Type: touchend<br>X: ${x}<br>Y: ${y}`;
-    });
-
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(function (position) {
         var latitude = position.coords.latitude;
