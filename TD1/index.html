@@ -96,7 +96,7 @@
     }
 
     if (window.DeviceOrientationEvent) {
-      window.addEventListener("devicemotion", function (event) {
+      window.addEventListener("deviceorientation", function (event) {
         var alpha = event.alpha;
         var beta = event.beta;
         var gamma = event.gamma;
@@ -132,6 +132,8 @@
           rotationRate.alpha;
         document.getElementById("rotation-rate-beta").innerHTML =
           rotationRate.beta;
+        document.getElementById("rotation-rate-gamma").innerHTML =
+          rotationRate.gamma;
       });
     } else {
       // Le mouvement du smartphone n'est pas disponible
