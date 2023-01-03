@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GeoCarto</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <p>Latitude: <span id="latitude"></span></p>
+    <p>Longitude: <span id="longitude"></span></p>
+    <p>Altitude: <span id="altitude"></span></p>
+    <p>Accuracy: <span id="accuracy"></span></p>
+    <p>Speed: <span id="speed"></span></p>
+    <p>Timestamp: <span id="timestamp"></span></p>
+  </body>
+  <script>
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var altitude = position.coords.altitude;
+        var accuracy = position.coords.accuracy;
+        var speed = position.coords.speed;
+        var timestamp = position.timestamp;
+
+        // Afficher les données sur la page Web
+        document.getElementById("latitude").innerHTML = latitude;
+        document.getElementById("longitude").innerHTML = longitude;
+        document.getElementById("altitude").innerHTML = altitude;
+        document.getElementById("accuracy").innerHTML = accuracy;
+        document.getElementById("speed").innerHTML = speed;
+        document.getElementById("timestamp").innerHTML = timestamp;
+      });
+    } else {
+      // La géolocalisation n'est pas disponible
+      document.getElementById("latitude").innerHTML =
+        "Geolocation is not available.";
+    }
+  </script>
+</html>
