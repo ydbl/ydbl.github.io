@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>GeoCarto</title>
+    <title>TP1 GeoCarto</title>
     <meta charset="utf-8" />
   </head>
   <body>
@@ -26,21 +26,29 @@
     <p>Beta: <span id="beta"></span></p>
     <p>Gamma: <span id="gamma"></span></p>
 
-
-    <h2>Le mouvement du smartphone : accélération en rotation et translation</h2>
+    <h2>
+      Le mouvement du smartphone : accélération en rotation et translation
+    </h2>
     <p>Acceleration X: <span id="acceleration-x"></span></p>
     <p>Acceleration Y: <span id="acceleration-y"></span></p>
     <p>Acceleration Z: <span id="acceleration-z"></span></p>
-    <p>Acceleration Including Gravity X: <span id="acceleration-including-gravity-x"></span></p>
-    <p>Acceleration Including Gravity Y: <span id="acceleration-including-gravity-y"></span></p>
-    <p>Acceleration Including Gravity Z: <span id="acceleration-including-gravity-z"></span></p>
+    <p>
+      Acceleration Including Gravity X:
+      <span id="acceleration-including-gravity-x"></span>
+    </p>
+    <p>
+      Acceleration Including Gravity Y:
+      <span id="acceleration-including-gravity-y"></span>
+    </p>
+    <p>
+      Acceleration Including Gravity Z:
+      <span id="acceleration-including-gravity-z"></span>
+    </p>
     <p>Rotation Rate Alpha: <span id="rotation-rate-alpha"></span></p>
     <p>Rotation Rate Beta: <span id="rotation-rate-beta"></span></p>
     <p>Rotation Rate Gamma: <span id="arotation-rate-gamma"></span></p>
-
   </body>
   <script type="text/javascript">
-
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(function (position) {
         var latitude = position.coords.latitude;
@@ -63,7 +71,6 @@
       document.getElementById("latitude").innerHTML =
         "Geolocation is not available.";
     }
-
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -89,42 +96,47 @@
     }
 
     if (window.DeviceOrientationEvent) {
-  window.addEventListener("deviceorientation", function(event) {
-    var alpha = event.alpha;
-    var beta = event.beta;
-    var gamma = event.gamma;
+      window.addEventListener("deviceorientation", function (event) {
+        var alpha = event.alpha;
+        var beta = event.beta;
+        var gamma = event.gamma;
 
-    // Afficher les données sur la page Web
-    document.getElementById("alpha").innerHTML = alpha;
-    document.getElementById("beta").innerHTML = beta;
-    document.getElementById("gamma").innerHTML = gamma;
-  });
-} else {
-  // L'orientation du smartphone n'est pas disponible
-  document.getElementById("alpha").innerHTML = "Device orientation is not available.";
-}
+        // Afficher les données sur la page Web
+        document.getElementById("alpha").innerHTML = alpha;
+        document.getElementById("beta").innerHTML = beta;
+        document.getElementById("gamma").innerHTML = gamma;
+      });
+    } else {
+      // L'orientation du smartphone n'est pas disponible
+      document.getElementById("alpha").innerHTML =
+        "Device orientation is not available.";
+    }
 
-if (window.DeviceMotionEvent) {
-  window.addEventListener("devicemotion", function(event) {
-    var acceleration = event.acceleration;
-    var accelerationIncludingGravity = event.accelerationIncludingGravity;
-    var rotationRate = event.rotationRate;
+    if (window.DeviceMotionEvent) {
+      window.addEventListener("devicemotion", function (event) {
+        var acceleration = event.acceleration;
+        var accelerationIncludingGravity = event.accelerationIncludingGravity;
+        var rotationRate = event.rotationRate;
 
-    // Afficher les données sur la page Web
-    document.getElementById("acceleration-x").innerHTML = acceleration.x;
-    document.getElementById("acceleration-y").innerHTML = acceleration.y;
-    document.getElementById("acceleration-z").innerHTML = acceleration.z;
-    document.getElementById("acceleration-including-gravity-x").innerHTML = accelerationIncludingGravity.x;
-    document.getElementById("acceleration-including-gravity-y").innerHTML = accelerationIncludingGravity.y;
-    document.getElementById("acceleration-including-gravity-z").innerHTML = accelerationIncludingGravity.z;
-    document.getElementById("rotation-rate-alpha").innerHTML = rotationRate.alpha;
-    document.getElementById("rotation-rate-beta").innerHTML = rotationRate.beta;
-    document.getElementById("rotation-rate-gamma").innerHTML = rotationRate.gamma;
-  });
-} else {
-  // Le mouvement du smartphone n'est pas disponible
-  document.getElementById("acceleration-x").innerHTML = "Device motion is not available.";
-}
-
+        // Afficher les données sur la page Web
+        document.getElementById("acceleration-x").innerHTML = acceleration.x;
+        document.getElementById("acceleration-y").innerHTML = acceleration.y;
+        document.getElementById("acceleration-z").innerHTML = acceleration.z;
+        document.getElementById("acceleration-including-gravity-x").innerHTML =
+          accelerationIncludingGravity.x;
+        document.getElementById("acceleration-including-gravity-y").innerHTML =
+          accelerationIncludingGravity.y;
+        document.getElementById("acceleration-including-gravity-z").innerHTML =
+          accelerationIncludingGravity.z;
+        document.getElementById("rotation-rate-alpha").innerHTML =
+          rotationRate.alpha;
+        document.getElementById("rotation-rate-beta").innerHTML =
+          rotationRate.beta;
+      });
+    } else {
+      // Le mouvement du smartphone n'est pas disponible
+      document.getElementById("acceleration-x").innerHTML =
+        "Device motion is not available.";
+    }
   </script>
 </html>
