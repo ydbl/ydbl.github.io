@@ -29,30 +29,54 @@
     <h2>
       Le mouvement du smartphone : accélération en rotation et translation
     </h2>
-    <p>Acceleration X: <span id="acceleration-x"></span></p>
-    <p>Acceleration Y: <span id="acceleration-y"></span></p>
-    <p>Acceleration Z: <span id="acceleration-z"></span></p>
-    <p>
-      Acceleration Including Gravity X:
-      <span id="acceleration-including-gravity-x"></span>
-    </p>
-    <p>
-      Acceleration Including Gravity Y:
-      <span id="acceleration-including-gravity-y"></span>
-    </p>
-    <p>
-      Acceleration Including Gravity Z:
-      <span id="acceleration-including-gravity-z"></span>
-    </p>
-    <p>Rotation Rate Alpha: <span id="rotation-rate-alpha"></span></p>
-    <p>Rotation Rate Beta: <span id="rotation-rate-beta"></span></p>
-    <p>Rotation Rate Gamma: <span id="arotation-rate-gamma"></span></p>
+    <p id="acceleration"></p>
+    <p id="accelerationIncludingGravity"></p>
+    <p id="rotationRate"></p>
 
     <h2>Touch event avec smartphone</h2>
     <div id="output"></div>
-    <canvas id="canvas" style="border: 2px solid #e66465;"></canvas>
+    <canvas width="600" height="600" style="border:solid black 1px;" id="canvas"></canvas>
   </body>
   <script type="text/javascript">
+    const output = document.getElementById("output");
+    const canvas = document.getElementById("canvas");
+    let isDrawing = false;
+    let x = 0;
+    let y = 0;
+
+    function draw(event) {
+      if (isDrawing) {
+        const ctx = canvas.getContext("2d");
+        ctx.lineWidth = 5;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        x = event.touches[0].clientX;
+        y = event.touches[0].clientY;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+      }
+    }
+
+    canvas.addEventListener("touchstart", (event) => {
+      isDrawing = true;
+      x = event.touches[0].clientX;
+      y = event.touches[0].clientY;
+      output.innerHTML = `Type: touchstart<br>X: ${x}<br>Y: ${y}`;
+    });
+
+    canvas.addEventListener("touchmove", (event) => {
+      event.preventDefault();
+      draw(event);
+      output.innerHTML = `Type: touchmove<br>X: ${x}<br>Y: ${y}`;
+    });
+
+    canvas.addEventListener("touchend", (event) => {
+      isDrawing = false;
+      output.innerHTML = `Type: touchend<br>X: ${x}<br>Y: ${y}`;
+    });
+
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(function (position) {
         var latitude = position.coords.latitude;
@@ -100,87 +124,29 @@
     }
 
     if (window.DeviceOrientationEvent) {
-      window.addEventListener("deviceorientation", function (event) {
-        var alpha = event.alpha;
-        var beta = event.beta;
-        var gamma = event.gamma;
+  window.addEventListener('deviceorientation', (event) => {
+    const { alpha, beta, gamma } = event;
+    const alphaEl = document.getElementById('alpha');
+    const betaEl = document.getElementById('beta');
+    const gammaEl = document.getElementById('gamma');
 
-        // Afficher les données sur la page Web
-        document.getElementById("alpha").innerHTML = alpha;
-        document.getElementById("beta").innerHTML = beta;
-        document.getElementById("gamma").innerHTML = gamma;
-      });
-    } else {
-      // L'orientation du smartphone n'est pas disponible
-      document.getElementById("alpha").innerHTML =
-        "Device orientation is not available.";
-    }
+    alphaEl.innerHTML = `Alpha: ${alpha} °`;
+    betaEl.innerHTML = `Beta: ${beta} °`;
+    gammaEl.innerHTML = `Gamma: ${gamma} °`;
+  });
+}
 
-    if (window.DeviceMotionEvent) {
-      window.addEventListener("devicemotion", function (event) {
-        var acceleration = event.acceleration;
-        var accelerationIncludingGravity = event.accelerationIncludingGravity;
-        var rotationRate = event.rotationRate;
+if (window.DeviceMotionEvent) {
+  window.addEventListener('devicemotion', (event) => {
+    const { acceleration, accelerationIncludingGravity, rotationRate, interval } = event;
+    const accelerationEl = document.getElementById('acceleration');
+    const accelerationIncludingGravityEl = document.getElementById('accelerationIncludingGravity');
+    const rotationRateEl = document.getElementById('rotationRate');
 
-        console.log(acceleration.x);
-        // Afficher les données sur la page Web
-        document.getElementById("acceleration-x").innerHTML = acceleration.x;
-        document.getElementById("acceleration-y").innerHTML = acceleration.y;
-        document.getElementById("acceleration-z").innerHTML = acceleration.z;
-        document.getElementById("acceleration-including-gravity-x").innerHTML =
-          accelerationIncludingGravity.x;
-        document.getElementById("acceleration-including-gravity-y").innerHTML =
-          accelerationIncludingGravity.y;
-        document.getElementById("acceleration-including-gravity-z").innerHTML =
-          accelerationIncludingGravity.z;
-        document.getElementById("rotation-rate-alpha").innerHTML =
-          rotationRate.alpha;
-        document.getElementById("rotation-rate-beta").innerHTML =
-          rotationRate.beta;
-      });
-    } else {
-      // Le mouvement du smartphone n'est pas disponible
-      document.getElementById("acceleration-x").innerHTML =
-        "Device motion is not available.";
-    }
-
-    const output = document.getElementById('output');
-    const canvas = document.getElementById('canvas');
-    let isDrawing = false;
-    let x = 0;
-    let y = 0;
-    
-    function draw(event) {
-      if (isDrawing) {
-        const ctx = canvas.getContext('2d');
-        ctx.lineWidth = 5;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = 'black';
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        x = event.touches[0].clientX;
-        y = event.touches[0].clientY;
-        ctx.lineTo(x, y);
-        ctx.stroke();
-      }
-    }
-    
-    canvas.addEventListener('touchstart', event => {
-      isDrawing = true;
-      x = event.touches[0].clientX;
-      y = event.touches[0].clientY;
-      output.innerHTML = `Type: touchstart<br>X: ${x}<br>Y: ${y}`;
-    });
-    
-    canvas.addEventListener('touchmove', event => {
-      event.preventDefault();
-      draw(event);
-      output.innerHTML = `Type: touchmove<br>X: ${x}<br>Y: ${y}`;
-    });
-    
-    canvas.addEventListener('touchend', event => {
-      isDrawing = false;
-      output.innerHTML = `Type: touchend<br>X: ${x}<br>Y: ${y}`;
-    });
+    accelerationEl.innerHTML = `Acceleration: ${acceleration.x} m/s², ${acceleration.y} m/s², ${acceleration.z} m/s²`;
+    accelerationIncludingGravityEl.innerHTML = `Acceleration including gravity: ${accelerationIncludingGravity.x} m/s², ${accelerationIncludingGravity.y} m/s², ${accelerationIncludingGravity.z} m/s²`;
+    rotationRateEl.innerHTML = `Rotation rate: ${rotationRate.alpha} °/s, ${rotationRate.beta} °/s, ${rotationRate.gamma} °/s`;
+  });
+}
   </script>
 </html>
