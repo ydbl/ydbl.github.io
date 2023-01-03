@@ -5,14 +5,48 @@
     <meta charset="utf-8" />
   </head>
   <body>
+    <h2>Affichage avec watchPosition()</h2>
     <p>Latitude: <span id="latitude"></span></p>
     <p>Longitude: <span id="longitude"></span></p>
     <p>Altitude: <span id="altitude"></span></p>
     <p>Accuracy: <span id="accuracy"></span></p>
     <p>Speed: <span id="speed"></span></p>
     <p>Timestamp: <span id="timestamp"></span></p>
+
+    <h2>Affichage avec getCurrentPosition()</h2>
+    <p>Latitude: <span id="latitude1"></span></p>
+    <p>Longitude: <span id="longitude1"></span></p>
+    <p>Altitude: <span id="altitude1"></span></p>
+    <p>Accuracy: <span id="accuracy1"></span></p>
+    <p>Speed: <span id="speed1"></span></p>
+    <p>Timestamp: <span id="timestamp1"></span></p>
   </body>
   <script type="text/javascript">
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(function (position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var altitude = position.coords.altitude;
+        var accuracy = position.coords.accuracy;
+        var speed = position.coords.speed;
+        var timestamp = position.timestamp;
+
+        // Afficher les données sur la page Web
+        document.getElementById("latitude").innerHTML = latitude;
+        document.getElementById("longitude").innerHTML = longitude;
+        document.getElementById("altitude").innerHTML = altitude;
+        document.getElementById("accuracy").innerHTML = accuracy;
+        document.getElementById("speed").innerHTML = speed;
+        document.getElementById("timestamp").innerHTML = timestamp;
+      });
+    } else {
+      // La géolocalisation n'est pas disponible
+      document.getElementById("latitude").innerHTML =
+        "Geolocation is not available.";
+    }
+
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         var latitude = position.coords.latitude;
@@ -22,15 +56,13 @@
         var speed = position.coords.speed;
         var timestamp = position.timestamp;
 
-        console.log(latitude);
-
         // Afficher les données sur la page Web
-        document.getElementById("latitude").innerHTML = latitude;
-        document.getElementById("longitude").innerHTML = longitude;
-        document.getElementById("altitude").innerHTML = altitude;
-        document.getElementById("accuracy").innerHTML = accuracy;
-        document.getElementById("speed").innerHTML = speed;
-        document.getElementById("timestamp").innerHTML = timestamp;
+        document.getElementById("latitude1").innerHTML = latitude;
+        document.getElementById("longitude1").innerHTML = longitude;
+        document.getElementById("altitude1").innerHTML = altitude;
+        document.getElementById("accuracy1").innerHTML = accuracy;
+        document.getElementById("speed1").innerHTML = speed;
+        document.getElementById("timestamp1").innerHTML = timestamp;
       });
     } else {
       // La géolocalisation n'est pas disponible
