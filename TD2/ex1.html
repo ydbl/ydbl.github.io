@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TP2 GeoCarto</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <style> #map { height: 600px; }</style>
+  </body>
+<script type="text/javascript">
+// Initialisation de la carte avec les options par défaut
+var map = L.map('map').setView([0, 0], 13);
+
+// Ajout de la couche de tuiles OpenStreetMap
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+// Utilisation de la fonctionnalité de géolocalisation pour récupérer les coordonnées de la position actuelle
+navigator.geolocation.getCurrentPosition(function(position) {
+    var lat = position.coords.latitude,
+        lng = position.coords.longitude;
+    
+    var latNice = 43.7031691,
+        lngNice = 7.2679331;
+    // Centrer la carte sur la position actuelle
+    map.setView([lat, lng], 13);
+    map.setView([latNice, lngNice], 13);
+    
+    // Ajout d'un marqueur sur la position actuelle
+    L.marker([lat, lng]).addTo(map);
+    L.marker([latNice, lngNice]).addTo(map);
+});
+</script>
