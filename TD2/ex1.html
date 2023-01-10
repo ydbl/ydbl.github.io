@@ -24,7 +24,7 @@
     </style>
   </body>
   <script type="text/javascript">
-    var map = L.map("map").setView([0, 0], 13);
+    var map = L.map("map").setView([0, 0], 15);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -32,7 +32,7 @@
     }).addTo(map);
 
     navigator.geolocation.getCurrentPosition(function (position) {
-      map.setView([position.coords.latitude, position.coords.longitude], 13);
+      map.setView([position.coords.latitude, position.coords.longitude], 15);
 
       L.marker([position.coords.latitude, position.coords.longitude])
         .addTo(map)
@@ -40,7 +40,10 @@
         .openPopup();
     });
 
-    var nice = [43.7031, 7.2661]; // Coordonnées de Nice
-    L.marker(nice).addTo(map).bindPopup("Nice").openPopup();
+    var nice = [43.7031, 7.2661];
+    L.marker(nice)
+    .addTo(map)
+    .bindPopup("Nice centre ville")
+    .openPopup();
   </script>
 </html>
