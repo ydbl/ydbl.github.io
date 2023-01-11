@@ -19,13 +19,10 @@
     <style> #map { height: 600px; }</style>
   </body>
 <script type="text/javascript">
-    var map = L.map('map').setView([25.774, -80.190], 13);
+    var map = L.map('map').setView([25.774, -80.190], 18);
 
 L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
-    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    subdomains: 'abcd',
-    minZoom: 0,
-    maxZoom: 18,
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
 var bermudaTriangle = L.polygon([
@@ -61,5 +58,5 @@ function onLocationError(e) {
 map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
 
-map.locate({setView: true, maxZoom: 16});
+map.locate({setView: true});
 </script>
