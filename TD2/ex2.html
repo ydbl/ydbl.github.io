@@ -21,7 +21,7 @@
 <script type="text/javascript">
     var map = L.map('map').setView([25.774, -80.190], 18);
 
-L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
+L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
@@ -48,7 +48,7 @@ function onLocationFound(e) {
         .bindPopup("Marseille").openPopup();
 
     L.marker([43.7031, 7.2661]).addTo(map)
-        .bindPopup("La distance entre Marseille et Nice est de : " + distance + " KM ").openPopup();
+        .bindPopup("La distance entre Marseille et Nice est de : " + distance).openPopup();
 }
 
 function onLocationError(e) {
