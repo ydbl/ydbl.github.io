@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TP2 GeoCarto</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
+    <script src='https://cdn.jsdelivr.net/npm/@turf/turf/turf.min.js'></script>
+    <script
+    src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0"
+  ></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <style> #map { height: 600px; }</style>
+  </body>
+<script type="text/javascript">
+    var map = L.map('map').setView([25.774, -80.190], 13);
+
+L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: 'abcd',
+    minZoom: 0,
+    maxZoom: 18,
+}).addTo(map);
+
+var bermudaTriangle = L.polygon([
+    [25.774, -80.190],
+    [18.466, -66.118],
+    [32.321, -64.757]
+], {color: "red"}).addTo(map);
+
+function onLocationFound(e) {
+    var radius = e.accuracy;
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("Vous êtes à " + radius + " mètres de ce point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+
+    var from = turf.point([5.38107,43.29695]);
+    var to = turf.point([43.7031, 7.2661]);
+    var options = { units: 'kilometers' };
+    var distance = turf.distance(from, to, options);
+    L.polyline([[43.29695, 5.38107], [43.7031, 7.2661]], {color: 'blue'}).addTo(map);
+    L.marker([43.29695, 5.38107]).addTo(map)
+        .bindPopup("Marseille").openPopup();
+
+    L.marker([43.7031, 7.2661]).addTo(map)
+        .bindPopup("La distance entre Marseille et Nice est de : " + distance + " KM ").openPopup();
+}
+
+function onLocationError(e) {
+    alert(e.message);
+}
+
+map.on('locationfound', onLocationFound);
+map.on('locationerror', onLocationError);
+
+map.locate({setView: true, maxZoom: 16});
+</script>
