@@ -3,60 +3,91 @@
   <head>
     <title>TP2 GeoCarto</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-    crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-    crossorigin=""></script>
-    <script src='https://cdn.jsdelivr.net/npm/@turf/turf/turf.min.js'></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
     <script
-    src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0"
-  ></script>
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf/turf.min.js"></script>
+    <script src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0"></script>
   </head>
   <body>
     <div id="map"></div>
-    <style> #map { height: 600px; }</style>
+    <style>
+      #map {
+        height: 600px;
+      }
+    </style>
   </body>
-<script type="text/javascript">
-    var map = L.map('map').setView([25.774, -80.190], 18);
+  <script type="text/javascript">
+    var map = L.map("map").setView([25.774, -80.19], 18);
 
-L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
-    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+    L.tileLayer("https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png", {
+      attribution:
+        'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
 
-var bermudaTriangle = L.polygon([
-    [25.774, -80.190],
-    [18.466, -66.118],
-    [32.321, -64.757]
-], {color: "red"}).addTo(map);
+    var bermudaTriangle = L.polygon(
+      [
+        [25.774, -80.19],
+        [18.466, -66.118],
+        [32.321, -64.757],
+      ],
+      { color: "red" }
+    ).addTo(map);
 
-function onLocationFound(e) {
-    var radius = e.accuracy;
+    function onLocationFound(e) {
+      var radius = e.accuracy;
 
-    L.marker(e.latlng).addTo(map)
-        .bindPopup("Vous êtes à " + radius + " mètres de ce point").openPopup();
+      L.marker(e.latlng)
+        .addTo(map)
+        .bindPopup("Vous êtes à " + radius + " mètres de ce point")
+        .openPopup();
 
-    L.circle(e.latlng, radius).addTo(map);
+      L.circle(e.latlng, radius).addTo(map);
 
-    var from = turf.point([5.38107,43.29695]);
-    var to = turf.point([43.7031, 7.2661]);
-    var options = { units: 'kilometers' };
-    var distance = turf.distance(from, to, options);
-    L.polyline([[43.29695, 5.38107], [43.7031, 7.2661]], {color: 'blue'}).addTo(map);
-    L.marker([43.29695, 5.38107]).addTo(map)
-        .bindPopup("Marseille").openPopup();
+      var marseille = [43.29695, 5.38107];
+      var nice = [43.7031, 7.2661];
+      var R = 6371e3;
+      var lat1 = (marseille[0] * Math.PI) / 180;
+      var lat2 = (nice[0] * Math.PI) / 180;
+      var deltaLat = ((nice[0] - marseille[0]) * Math.PI) / 180;
+      var deltaLon = ((nice[1] - marseille[1]) * Math.PI) / 180;
 
-    L.marker([43.7031, 7.2661]).addTo(map)
-        .bindPopup("La distance entre Marseille et Nice est de : " + distance).openPopup();
-}
+      var a =
+        Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+        Math.cos(lat1) *
+          Math.cos(lat2) *
+          Math.sin(deltaLon / 2) *
+          Math.sin(deltaLon / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var d = R * c;
+      var distance = Math.round(d / 1000);
 
-function onLocationError(e) {
-    alert(e.message);
-}
+      L.polyline([marseille, nice], { color: "blue" }).addTo(map);
+      L.marker(marseille).addTo(map).bindPopup("Marseille").openPopup();
+      L.marker(nice)
+        .addTo(map)
+        .bindPopup(
+          "Nice , la distance entre Marseille et Nice est de : " +
+            distance +
+            " KM "
+        )
+        .openPopup();
+    }
+    function onLocationError(e) {
+      alert(e.message);
+    }
 
-map.on('locationfound', onLocationFound);
-map.on('locationerror', onLocationError);
+    map.on("locationfound", onLocationFound);
+    map.on("locationerror", onLocationError);
 
-map.locate({setView: true});
-</script>
+    map.locate({ setView: true });
+  </script>
+</html>
