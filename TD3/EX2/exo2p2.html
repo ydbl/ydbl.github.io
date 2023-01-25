@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>TP4 Three JS</title>
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.148.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.148.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module">
+      // Importation des modules nécessaires
+      import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.122.0/build/three.module.js";
+      import { EffectComposer } from "https://cdn.jsdelivr.net/npm/three@0.122.0/examples/jsm/postprocessing/EffectComposer.js";
+      import { RenderPass } from "https://cdn.jsdelivr.net/npm/three@0.122.0/examples/jsm/postprocessing/RenderPass.js";
+      import { ShaderPass } from "https://cdn.jsdelivr.net/npm/three@0.122.0/examples/jsm/postprocessing/ShaderPass.js";
+      import { GPUParticleSystem } from "https://cdn.jsdelivr.net/npm/three@0.122.0/examples/jsm/gpu/GPUParticleSystem.js";
+
+      // Initialisation de la scène
+      const scene = new THREE.Scene();
+
+      // Initialisation de la caméra
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+
+      // Initialisation du renderer
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Chargement de l'objet 3D
+      const objectLoader = new THREE.ObjectLoader();
+      objectLoader.load("test.glb", function (obj) {
+        scene.add(obj);
+      });
+
+      // Ajout de la brume
+      const fog = new THREE.Fog(0xffffff, 0.15, 100);
+      scene.fog = fog;
+
+      // Initialisation de la lumière
+      const light = new THREE.PointLight(0xffffff, 1, 100);
+      light.position.set(0, 0, 0);
+      scene.add(light);
+
+      // Initialisation des particules
+      const particleSystem = new GPUParticleSystem({
+        maxParticles: 250000,
+      });
+      scene.add(particleSystem);
+
+      // Animation de l'objet en utilisant les événements DeviceOrientation et DeviceMotion
+      window.addEventListener("deviceorientation", handleOrientation, true);
+
+      function handleOrientation(event) {
+        var x = event.beta; // In degree in the range [-180,180]
+        var y = event.gamma; // In degree in the range [-90,90]
+
+        // Do something with the new orientation data
+        obj.rotation.x = x;
+        obj.rotation.y = y;
+      }
+
+      // Animation de l'objet en utilisant les événements DeviceMotion
+      window.addEventListener("devicemotion", handleMotion, true);
+
+      function handleMotion(event) {
+        var x = event.acceleration.x;
+        var y = event.acceleration.y;
+        var z = event.acceleration.z;
+
+        // Do something with the new motion data
+        obj.position.x = x;
+        obj.position.y = y;
+        obj.position.z = z;
+      }
+
+      // Ajout de l'effet de particules
+      const composer = new EffectComposer(renderer);
+      composer.addPass(new RenderPass(scene, camera));
+      const particlePass = new ShaderPass(THREE.GPUParticleShader);
+      particlePass.renderToScreen = true;
+      composer.addPass(particlePass);
+
+      // Boucle de rendu
+      function render() {
+        requestAnimationFrame(render);
+        composer.render();
+      }
+      render();
+    </script>
+  </body>
+</html>
