@@ -3,27 +3,46 @@
   <head>
     <title>TP4 GeoCarto</title>
     <meta charset="utf-8" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-      crossorigin=""
-    />
-    <script
-      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-      crossorigin=""
-    ></script>
-    <script src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0"></script>
   </head>
   <body>
-    <div id="map"></div>
-    <style>
-      #map {
-        height: 600px;
-      }
-    </style>
+    <canvas id="myCanvas"></canvas>
   </body>
   <script type="text/javascript">
+    var canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext("2d");
+
+    // Chargement de l'image
+    var image = new Image();
+    image.src = "img.png";
+    image.onload = function () {
+      // Dimensionnement du canvas
+      canvas.width = image.width;
+      canvas.height = image.height;
+      ctx.drawImage(image, 0, 0);
+
+      // Dessin de la maison
+      ctx.fillStyle = "#f79646";
+      ctx.fillRect(50, canvas.height - 550, 400, 400);
+
+      // Dessin de la porte
+      ctx.fillStyle = "#c0504d";
+      ctx.fillRect(75, canvas.height - 300, 50, 150);
+
+      // Dessin du toit
+      ctx.beginPath();
+      ctx.moveTo(50, canvas.height - 550);
+      ctx.lineTo(450, canvas.height - 550);
+      ctx.lineTo(250, canvas.height - 800);
+      ctx.fillStyle = "red";
+      ctx.fill();
+
+      // Dessin du soleil
+      ctx.beginPath();
+      ctx.arc(canvas.width - 150, 75, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "yellow";
+      ctx.fill();
+
+    };
   </script>
 </html>
