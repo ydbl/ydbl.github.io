@@ -1,48 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TP4 GeoCarto</title>
+    <title>TP4 GeoCarto Exo1</title>
     <meta charset="utf-8" />
   </head>
   <body>
-    <canvas id="myCanvas"></canvas>
+    <a href="exo1p1.html">Partie 1</a>
+    <a href="exo1p2.html">Partie 2</a>
   </body>
-  <script type="text/javascript">
-    var canvas = document.createElement("canvas");
-    document.body.appendChild(canvas);
-    var ctx = canvas.getContext("2d");
-
-    // Chargement de l'image
-    var image = new Image();
-    image.src = "img.png";
-    image.onload = function () {
-      // Dimensionnement du canvas
-      canvas.width = image.width;
-      canvas.height = image.height;
-      ctx.drawImage(image, 0, 0);
-
-      // Dessin de la maison
-      ctx.fillStyle = "#f79646";
-      ctx.fillRect(50, canvas.height - 550, 400, 400);
-
-      // Dessin de la porte
-      ctx.fillStyle = "#c0504d";
-      ctx.fillRect(75, canvas.height - 300, 50, 150);
-
-      // Dessin du toit
-      ctx.beginPath();
-      ctx.moveTo(50, canvas.height - 550);
-      ctx.lineTo(450, canvas.height - 550);
-      ctx.lineTo(250, canvas.height - 800);
-      ctx.fillStyle = "red";
-      ctx.fill();
-
-      // Dessin du soleil
-      ctx.beginPath();
-      ctx.arc(canvas.width - 150, 75, 50, 0, 2 * Math.PI);
-      ctx.fillStyle = "yellow";
-      ctx.fill();
-
-    };
-  </script>
 </html>
