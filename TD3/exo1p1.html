@@ -23,23 +23,23 @@
 
       // Dessin de la maison
       ctx.fillStyle = "#f79646";
-      ctx.fillRect(50, canvas.height - 550, 400, 400);
+      ctx.fillRect(50, canvas.height - 450, 400, 300);
 
       // Dessin de la porte
       ctx.fillStyle = "#c0504d";
-      ctx.fillRect(75, canvas.height - 300, 50, 150);
+      ctx.fillRect(100, canvas.height - 300, 100, 150);
 
       // Dessin du toit
       ctx.beginPath();
-      ctx.moveTo(50, canvas.height - 550);
-      ctx.lineTo(450, canvas.height - 550);
-      ctx.lineTo(250, canvas.height - 800);
+      ctx.moveTo(50, canvas.height - 450);
+      ctx.lineTo(450, canvas.height - 450);
+      ctx.lineTo(250, canvas.height - 650);
       ctx.fillStyle = "red";
       ctx.fill();
 
       // Dessin du soleil
       ctx.beginPath();
-      ctx.arc(canvas.width - 150, 75, 50, 0, 2 * Math.PI);
+      ctx.arc(canvas.width - 200, 200, 160, 0, 2 * Math.PI);
       ctx.fillStyle = "yellow";
       ctx.fill();
 
