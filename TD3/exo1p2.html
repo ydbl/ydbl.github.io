@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TP4 GeoCarto Exo1 Partie 1</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <svg viewBox="0 0 500 500">
+      <rect
+        id="ciel"
+        x="0"
+        y="-100"
+        width="500"
+        height="400"
+        fill="#4f81bd"
+      ></rect>
+      <rect
+        id="sol"
+        x="0"
+        y="200"
+        width="500"
+        height="100"
+        fill="#9bbb59"
+      ></rect>
+      <polygon
+        id="montagne1"
+        points="30,200 100,80 150,200"
+        fill="#c0504d"
+      ></polygon>
+      <polygon
+        id="montagne2"
+        points="80,200 180,50 260,200"
+        fill="#c0504d"
+      ></polygon>
+      <polygon
+        id="montagne3"
+        points="200,200 250,70 320,200"
+        fill="#c0504d"
+      ></polygon>
+      <polygon
+        id="montagne4"
+        points="250,200 320,40 400,200"
+        fill="#c0504d"
+      ></polygon>
+      <circle id="soleil" cx="450" cy="50" r="40" fill="yellow"></circle>
+      <rect
+        id="maison"
+        x="325"
+        y="160"
+        width="100"
+        height="100"
+        fill="#f79646"
+      ></rect>
+      <rect
+        id="porte"
+        x="340"
+        y="210"
+        width="50"
+        height="50"
+        fill="white"
+      ></rect>
+      <polygon id="toit" points="425,160 375,100 325,160" fill="red"></polygon>
+    </svg>
+  </body>
+  <script type="text/javascript">
+    // Récupération des éléments SVG
+    var ciel = document.getElementById("ciel");
+    var porte = document.getElementById("porte");
+    var soleil = document.getElementById("soleil");
+
+    // Event listeners
+    porte.addEventListener("mouseover", function () {
+      porte.setAttribute("fill", "#9bbb59");
+    });
+    porte.addEventListener("mouseout", function () {
+      porte.setAttribute("fill", "white");
+    });
+    soleil.addEventListener("click", function () {
+      if (ciel.getAttribute("fill") === "#4f81bd") {
+        ciel.setAttribute("fill", "gray");
+      } else {
+        ciel.setAttribute("fill", "#4f81bd");
+      }
+    });
+  </script>
+</html>
