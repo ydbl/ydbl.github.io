@@ -25,9 +25,9 @@
     </script>
 
     <script type="module">
-      import * as THREE from "three";
-      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-      import {GLTFLoader} from "https://cdn.rawgit.com/mrdoob/three.js/master/examples/jsm/loaders/GLTFLoader.js"
+      import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+      import { OrbitControls } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js";
+      import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(
@@ -70,14 +70,13 @@
 
         const { x, y, z } = convertLatLonToCartesian(latitude, longitude, 1);
 
-        const loader = new THREE.GLTFLoader();
-        loader.load(
-          "lapin.glb",
-          function (gltf) {
-            model = gltf.scene;
-            earth.add(lapin);
-          }
-        );
+        const loader = new GLTFLoader();
+        loader.load("wraith.glb", function (gltf) {
+          let model;
+          model = gltf.scene;
+          model.scale.set(0.001, 0.001, 0.001);
+          earth.add(model);
+        });
       });
 
       fetch("https://restcountries.com/v3.1/all")
