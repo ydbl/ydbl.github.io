@@ -75,6 +75,7 @@
           let model;
           model = gltf.scene;
           model.scale.set(0.001, 0.001, 0.001);
+          model.position.set(x, y, z);
           earth.add(model);
         });
       });
