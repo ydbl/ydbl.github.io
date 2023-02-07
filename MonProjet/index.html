@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="test.png" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://getbootstrap.com/docs/5.3/assets/css/docs.css"
+      rel="stylesheet"
+    />
+    <title>PartyTonight</title>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        position: absolute;
+        top: 60px;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar bg-body-tertiary fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">PartyTonight</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="offcanvas offcanvas-end"
+          tabindex="-1"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+              Mon compte
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Profile</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Styles
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" id="satellite-streets-v12" href="#"
+                      >Satellite</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" id="light-v11" href="#">Light</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" id="dark-v11" href="#">Dark</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" id="streets-v12" href="#"
+                      >Streets</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" id="outdoors-v12" href="#"
+                      >Exterieur</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <form class="d-flex mt-3" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div id="map"></div>
+
+    <script type="module">
+      import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+      import { OrbitControls } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js";
+      import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+      
+
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoieWRibCIsImEiOiJjbGR0MTlhajgweHE5M3BwZjlyMTM1b291In0.dwoXofVyriYNpGxGhEmIMw";
+
+        function getMyLoc() {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          map.setCenter([position.coords.longitude, position.coords.latitude]);
+        });
+      }
+
+      var map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: getMyLoc(),
+        zoom: 9,
+      });
+      // Change map style based on navigation link clicks
+      document.getElementById("satellite-streets-v12").onclick = function () {
+        map.setStyle("mapbox://styles/mapbox/satellite-streets-v12");
+      };
+      document.getElementById("light-v11").onclick = function () {
+        map.setStyle("mapbox://styles/mapbox/light-v11");
+      };
+      document.getElementById("dark-v11").onclick = function () {
+        map.setStyle("mapbox://styles/mapbox/dark-v11");
+      };
+      document.getElementById("streets-v12").onclick = function () {
+        map.setStyle("mapbox://styles/mapbox/streets-v12");
+      };
+      document.getElementById("outdoors-v12").onclick = function () {
+        map.setStyle("mapbox://styles/mapbox/outdoors-v12");
+      };
+
+      function convertLatLonToCartesian(lat, lon, radius) {
+        const phi = (lat * Math.PI) / 180;
+        const theta = ((lon - 180) * Math.PI) / 180;
+
+        const x = -(radius * Math.cos(phi) * Math.cos(theta));
+        const y = radius * Math.sin(phi);
+        const z = radius * Math.cos(phi) * Math.sin(theta);
+        return { x, y, z };
+      }
+
+      await fetch("http://192.168.1.103:3001/club", { method: "GET" })
+        .then((response) => response.json())
+        .then((data) => {
+          data.forEach((club) => {
+            const lngLat = club.cords;
+            const marker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map);
+
+            marker.getElement().addEventListener("click", function () {
+              const popup = new mapboxgl.Popup({
+                closeOnClick: false,
+              })
+                .setLngLat(lngLat)
+                .setHTML(
+                  `
+  <div class="card-body">
+    <h5 class="card-title">${club.name}</h5>
+    <h6 class="card-subtitle mb-2 text-muted"><p>${club.style}</p></h6>
+    <p class="card-text"><p>${club.adresse}</p>
+    <a href="#" class="close-popup">Fermer</a>
+    <a href="#" class="goTarget"">Guidez-moi</a>
+  </div>
+`
+                )
+                .addTo(map);
+
+                var layerCounter = 0;
+
+// Ajouter un bouton pour tracer la route
+var button = document.querySelector('.goTarget');
+button.addEventListener('click', function() {
+  // Obtenir la géolocalisation actuelle de l'utilisateur
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var start = [position.coords.longitude, position.coords.latitude];
+    
+    // Obtenir la position du marqueur sélectionné
+    var target = club.cords; // exemple de coordonnées
+    
+    // Utiliser Mapbox Directions API pour obtenir les instructions de route
+    var url = 'https://api.mapbox.com/directions/v5/mapbox/driving/' + start[0] + ',' + start[1] + ';' + club.cords[0] + ',' + club.cords[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
+    
+    // Tracez la route sur la carte
+    fetch(url)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        var route = data.routes[0].geometry;
+        var layerID = 'route-' + layerCounter++;
+        map.addLayer({
+          id: layerID,
+          type: 'line',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              properties: {},
+              geometry: route
+            }
+          },
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#888',
+            'line-width': 8
+          }
+        });
+        
+        const closePopup = document.querySelector(".close-popup");
+              closePopup.addEventListener("click", function () {
+                popup.remove();
+                map.removeLayer(layerID);
+          map.removeSource(layerID);
+              });
+            });
+          });
+        });
+      });
+  });
+});
+
+</script>
+
+  </body>
+</html>
