@@ -1,0 +1,30 @@
+{
+  "club": [
+    {
+      "id": 0,
+      "name": "YesYes",
+      "style": "Boite de nuit",
+      "adresse" : "327 Avenue Non, Paris 75000",
+      "cords": [2.3522, 48.8566]
+    },    {
+      "id": 1,
+      "name": "3DB",
+      "style": "Bar",
+      "adresse" : "18 Rue Piano, Nord",
+      "cords": [4.3522, 48.8566]
+    },
+    {
+      "id": 2,
+      "name": "Casa Becchio",
+      "style": "Bar",
+      "adresse" : "10 Av. Félix Faure, 06000 Nice",
+      "cords": [7.2729681, 43.6982317]
+    },    {
+      "id": 3,
+      "name": "Elisabeth Bar's",
+      "style": "Bar",
+      "adresse" : "2 Rue Halévy, 06000 Nice",
+      "cords": [7.1995187, 43.6954593]
+    }
+  ]
+}
