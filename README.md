@@ -4,3 +4,4 @@ Pour faire fonctionné le json serveur, ouvrire le fichier package.json :
 Pour faire fonctionné le code : 
 - Lancer le serveur json via la commande : npm run jsonserver
 - Recupere l'adresse de l'API une foi lancer et la mettre dans l'index.html
+- Lancer le code (j'utilise personnellement l'extention Go Live sur Visual Studio Code)
